@@ -10,8 +10,6 @@ public interface BiIterator<T> {
 
     public Optional<T> peek();
 
-    default public boolean atEOF() {
-        return this.peek().isEmpty();
-    }
+    public boolean atEOF();
 
 }

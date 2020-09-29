@@ -14,16 +14,24 @@ public class StringIStream implements IStream<Character> {
 
     @Override
     public Optional<Character> next() {
-        return Optional.ofNullable(this.atEOF() ? null : this.source.charAt(this.current++));
+        Optional<Character> character = this.peek();
+        character.ifPresent(_character -> this.current++);
+        return character;
     }
 
     @Override
     public Optional<Character> previous() {
-        return Optional.ofNullable(this.current <= 0 ? null : this.source.charAt(--this.current));
+        this.current--;
+        return this.peek();
     }
 
     @Override
     public Optional<Character> peek() {
         return Optional.ofNullable(this.current < 0 || this.atEOF() ? null : this.source.charAt(this.current));
+    }
+
+    @Override
+    public boolean atEOF() {
+        return this.current >= this.source.length();
     }
 }
