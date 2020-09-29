@@ -5,11 +5,9 @@ import fr.emalios.lexer.stream.StringIStream;
 public class Main {
 
     public static void main(String[] args) {
-        String test = "Test kappa";
+        String test = "123*5+";
         StringIStream stringIStream = new StringIStream(test);
-        while (!stringIStream.atEOF()) {
-            System.out.println("char : " + stringIStream.next());
-        }
+        System.out.println(new Lexer(test).lexing());
     }
 
 }
