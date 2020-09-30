@@ -8,7 +8,7 @@ public class StringIStream implements IStream<Character> {
     private final String source;
 
     public StringIStream(String source)  {
-        this.source = source;
+        this.source = source.replace(" ", "");
         this.current = 0;
     }
 
