@@ -20,16 +20,14 @@ public class Lexer {
     public List<Token> lexing() {
         List<Token> tokens = new ArrayList<>();
         while (!this.stream.atEOF()) {
-            Token token = this.scan();
+            Token token = this.scan(this.stream.next().get());
             tokens.add(token);
-            this.stream.next();
         }
         return tokens;
     }
 
     // retourne le Token correspondant au charactère passé en paramètre
-    private Token scan() {
-        char character = this.stream.peek().get();
+    private Token scan(Character character) {
         switch (character) {
             case '-':
                 return SymbolToken.SUB;
@@ -43,27 +41,27 @@ public class Lexer {
                 return SymbolToken.LEFT_PARENTHESIS;
             case ')':
                 return SymbolToken.RIGHT_PARENTHESIS;
-            case ' ':
         }
         if(Character.isDigit(character)) {
-            return new IntToken(this.getNumber());
+            return new IntToken(this.getNumber(character));
         }
         //c'est pas sensé arriver wesh
         throw new IllegalStateException("Unrecognized character: '" + character + "'");
     }
 
-    private int getNumber() {
+    private int getNumber(Character character) {
         StringBuilder literalNumber = new StringBuilder();
-        boolean isDigit = true;
-        while (isDigit && !this.stream.atEOF()) {
-            char next = this.stream.next().get();
-            literalNumber.append(next);
+        literalNumber.append(character);
+        char current;
+        while(!this.stream.atEOF() && Character.isDigit(current = this.stream.next().get())) {
+            literalNumber.append(current);
             if(this.stream.atEOF()) {
                 break;
             }
-            isDigit = Character.isDigit(this.stream.peek().get());
         }
-        this.stream.previous();
+        if (!this.stream.atEOF()) {
+            this.stream.previous();
+        }
         return Integer.parseInt(literalNumber.toString());
     }
 }
