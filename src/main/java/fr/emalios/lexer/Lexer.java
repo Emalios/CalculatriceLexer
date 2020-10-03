@@ -11,13 +11,10 @@ import java.util.Optional;
 
 public class Lexer {
 
-    private final StringIStream stream;
+    private StringIStream stream;
 
-    public Lexer(String source) {
+    public List<Token> lexing(String source) {
         this.stream = new StringIStream(source);
-    }
-
-    public List<Token> lexing() {
         List<Token> tokens = new ArrayList<>();
         while (!this.stream.atEOF()) {
             Token token = this.scan(this.stream.next().get());
